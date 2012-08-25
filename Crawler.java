@@ -42,7 +42,7 @@ public class Crawler
     {
         // get CWB data and save to local
         String serverIP = "ftpsv.cwb.gov.tw";
-        String localPath = "./data/";
+        String localPath = "./output/ftp-data/";
         new Crawler().getFTP(serverIP, localPath);
 
         // exit
@@ -65,7 +65,7 @@ public class Crawler
     public void getFTP(String serverIP, String localPath)
     {
         String ftpCurrentDirectory = "/";
-        String logFileName = "./log/ftp.log";
+        String logFile = "./output/log/ftp.log";
         FTPClient ftpClient = null;
         FileWriter fileWriter = null;
 
@@ -73,9 +73,13 @@ public class Crawler
             // create FTP object
             ftpClient = new FTPClient();
 
+            // create local directory
+            String logPath = new File(logFile).getParent();
+            createLocalDirectory(logPath);
+
             // open log file
             boolean append = true;
-            fileWriter = new FileWriter(logFileName, append);
+            fileWriter = new FileWriter(logFile, append);
 
             // connect to FTP
             ftpClient.connect(serverIP);
