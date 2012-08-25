@@ -73,7 +73,7 @@ public class Crawler
             // create FTP object
             ftpClient = new FTPClient();
 
-            // create local directory
+            // create log directory
             String logPath = new File(logFile).getParent();
             createLocalDirectory(logPath);
 
