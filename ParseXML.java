@@ -47,6 +47,9 @@ public class ParseXML
 
             String password = getNodeValue("config.xml", "/config/cwb-ftp/password");
             System.out.println("password = " + "\"" + password + "\"");
+
+            String localPath = getNodeValue("config.xml", "/config/cwb-ftp/save-to-local");
+            System.out.println("save-to-local = " + "\"" + localPath + "\"");
         } catch (Exception e) {
             e.printStackTrace();
         }

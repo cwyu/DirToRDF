@@ -34,13 +34,22 @@ public class Main
 {
     public static void main(String [] args)
     {
-        // get CWB data and save to local
-        String serverIP = "ftpsv.cwb.gov.tw";
-        String localPath = "./output/ftp-data/";
-        new Crawler().getFTP(serverIP, localPath);
+        try {
+//            String serverIP = "ftpsv.cwb.gov.tw";
+//            String localPath = "./output/ftp-data/";
 
-        // generate RDF
-        new FileTraversal();
+            // read config.xml
+            String remoteIP = ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/host");
+            String localPath = ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/save-to-local");
+
+            // get CWB data and save to local
+            new Crawler().getFTP(remoteIP, localPath);
+
+            // generate RDF
+            new FileTraversal();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // exit
         System.exit(0);

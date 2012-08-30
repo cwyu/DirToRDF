@@ -41,9 +41,9 @@ public class Crawler
     public static void main(String [] args)
     {
         // get CWB data and save to local
-        String serverIP = "ftpsv.cwb.gov.tw";
+        String remoteIP = "ftpsv.cwb.gov.tw";
         String localPath = "./output/ftp-data/";
-        new Crawler().getFTP(serverIP, localPath);
+        new Crawler().getFTP(remoteIP, localPath);
 
         // exit
         System.exit(0);
@@ -54,7 +54,7 @@ public class Crawler
      *   Get data from FTP, and save files to local.
      *
      * Parameter
-     *   serverIP
+     *   remoteIP
      *     [in] server IP address.
      *   localPath
      *     [in] The path to save on local.
@@ -62,7 +62,7 @@ public class Crawler
      * Return value
      *   None.
      */
-    public void getFTP(String serverIP, String localPath)
+    public void getFTP(String remoteIP, String localPath)
     {
         String ftpCurrentDirectory = "/";
         String logFile = "./output/log/ftp.log";
@@ -82,7 +82,7 @@ public class Crawler
             fileWriter = new FileWriter(logFile, append);
 
             // connect to FTP
-            ftpClient.connect(serverIP);
+            ftpClient.connect(remoteIP);
 
             // check FTP reply code
             if (!FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {

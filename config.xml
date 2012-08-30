@@ -7,5 +7,6 @@
         <port>21</port>
         <username>anonymous</username>
         <password>none</password>
+        <save-to-local>./output/ftp-data/</save-to-local>
     </cwb-ftp>
 </config>
