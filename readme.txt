@@ -14,13 +14,13 @@ make clean
 
 ### Descriptions ###
 # log file
-./log/ftp.log
+./output/log/ftp.log
 
 # library path
 ./lib/
 
 # receive data path
-./data/
+./output/ftp-data/
 
 ### About Library ###
 # How to use FTPClient
@@ -31,3 +31,6 @@ http://commons.apache.org/net/download_net.cgi
 
 # Jena Download (解壓縮後，將Jena-x.x.x\lib裡的所有Jar檔加入Java專案的函式庫)
 http://www.apache.org/dist/jena/binaries/
+
+# jdom.jar for SAXBuilder (config.xml)
+http://www.jdom.org/dist/binary/archive/

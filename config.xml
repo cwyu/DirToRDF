@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configure File -->
+
+<config>
+    <cwb-ftp>
+        <host>ftpsv.cwb.gov.tw</host>
+        <port>21</port>
+        <username>anonymous</username>
+        <password>none</password>
+    </cwb-ftp>
+</config>
