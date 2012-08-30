@@ -1,7 +1,7 @@
 /*
  * Classname
  *
- *   ConfigXML
+ *   ParseXML
  * 
  * Version information
  *
@@ -29,7 +29,7 @@ import org.xml.sax.InputSource;
  *
  * TODO
  */
-public class ConfigXML
+public class ParseXML
 {
 
     public static void main(String [] args)

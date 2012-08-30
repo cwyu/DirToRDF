@@ -78,16 +78,16 @@ public class FileTraversal
 //        }
 
         try {
-            String host = ConfigXML.getNodeValue("config.xml", "/config/cwb-ftp/host");
+            String host = ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/host");
             System.out.println("host = " + "\"" + host + "\"");
 
-            String port = ConfigXML.getNodeValue("config.xml", "/config/cwb-ftp/port");
+            String port = ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/port");
             System.out.println("port = " + "\"" + port + "\"");
 
-            String username = ConfigXML.getNodeValue("config.xml", "/config/cwb-ftp/username");
+            String username = ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/username");
             System.out.println("username = " + "\"" + username + "\"");
 
-            String password = ConfigXML.getNodeValue("config.xml", "/config/cwb-ftp/password");
+            String password = ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/password");
             System.out.println("password = " + "\"" + password + "\"");
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,7 +99,6 @@ public class FileTraversal
         FileTraversal fileTraversal = new FileTraversal();
         fileTraversal.traverse(new File(basePath));
         //fileTraversal.model.write(System.out, "RDF/XML-ABBREV");
-        // haha
         fileTraversal.model.write(System.out, "N-TRIPLE");
 
 //        new FileTraversal() {
