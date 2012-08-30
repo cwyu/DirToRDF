@@ -98,8 +98,8 @@ public class FileTraversal
         System.setProperty("user.dir", "./output/ftp-data/");
         FileTraversal fileTraversal = new FileTraversal();
         fileTraversal.traverse(new File(basePath));
-        //fileTraversal.model.write(System.out, "RDF/XML-ABBREV");
-        fileTraversal.model.write(System.out, "N-TRIPLE");
+        fileTraversal.model.write(System.out, "RDF/XML-ABBREV");
+        //fileTraversal.model.write(System.out, "N-TRIPLE");
 
 //        new FileTraversal() {
 //            public void onFile(final File f) {
