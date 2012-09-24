@@ -3,6 +3,12 @@
 // http://jena.apache.org/documentation/javadoc/jena/com/hp/hpl/jena/vocabulary/DC.html
 // http://jena.apache.org/documentation/javadoc/jena/com/hp/hpl/jena/rdf/model/Resource.html
 // http://jena.sourceforge.net/IO/iohowto.html
+//
+// RDF2Go
+// http://semanticweb.org/wiki/RDF2Go
+//
+// Java XML parser comparison
+// http://blog.xuite.net/javax/programmer/22438335-%EF%BC%BBXML%EF%BC%BDJava%E4%B8%AD%E5%9B%9B%E7%A8%AE%E6%93%8D%E4%BD%9Cxml%E6%96%B9%E5%BC%8F%E7%9A%84%E6%AF%94%E8%BC%83
 
 /*
  * Classname
