@@ -7,6 +7,14 @@
         <port>21</port>
         <username>anonymous</username>
         <password>none</password>
-        <save-to-local>./output/ftp-data/</save-to-local>
+        <timeout description="in millisecond">5000</timeout>
+        <logFile>./output/log/ftp.log</logFile>
+        <localPath description="local path to save">./output/ftp-data/</localPath>
+        <isLocalPassiveMode description="[yes|no], set 'yes' in IIS or NCTU environment">yes</isLocalPassiveMode>
     </cwb-ftp>
+    <generate-rdf>
+        <rootPath>./output/ftp-data/</rootPath>
+        <outputPath>./output/rdf/</outputPath>
+        <fileName description="prefix file name">generated</fileName>
+    </generate-rdf>
 </config>

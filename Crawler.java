@@ -25,6 +25,7 @@
 package openisdm;
 
 import java.io.*;
+import java.net.*;
 import java.util.Date;
 import java.text.DateFormat;
 import org.apache.commons.net.ftp.*;
@@ -40,10 +41,16 @@ public class Crawler
 {
     public static void main(String [] args)
     {
-        // get CWB data and save to local
-        String remoteIP = "ftpsv.cwb.gov.tw";
-        String localPath = "./output/ftp-data/";
-        new Crawler().getFTP(remoteIP, localPath);
+        try {
+            // read config.xml
+            String remoteIP = ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/host");
+            String localPath = ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/localPath");
+
+            // get CWB data and save to local
+            new Crawler().getFTP(remoteIP, localPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // exit
         System.exit(0);
@@ -62,10 +69,18 @@ public class Crawler
      * Return value
      *   None.
      */
-    public void getFTP(String remoteIP, String localPath)
+    public void getFTP(String remoteIP, String localPath) throws Exception
     {
+        // read config.xml
+        int port = Integer.parseInt(ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/port"));
+        String username = ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/username");
+        String password = ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/password");
+        int timeout = Integer.parseInt(ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/timeout"));
+        String logFile = ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/logFile");
+        String isLocalPassiveMode = ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/isLocalPassiveMode");
+
+        // declaration
         String ftpCurrentDirectory = "/";
-        String logFile = "./output/log/ftp.log";
         FTPClient ftpClient = null;
         FileWriter fileWriter = null;
 
@@ -77,12 +92,15 @@ public class Crawler
             String logPath = new File(logFile).getParent();
             createLocalDirectory(logPath);
 
-            // open log file
+            // set log file
             boolean append = true;
             fileWriter = new FileWriter(logFile, append);
 
+            // set timeout
+            ftpClient.setConnectTimeout(timeout);
+
             // connect to FTP
-            ftpClient.connect(remoteIP);
+            ftpClient.connect(remoteIP, port);
 
             // check FTP reply code
             if (!FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {
@@ -96,12 +114,12 @@ public class Crawler
             System.out.println(ftpClient.getReplyString());
 
             // login to FTP
-            String user = "anonymous";
-            String password = "";
-            ftpClient.login(user, password);
+            ftpClient.login(username, password);
 
             // avoid local <--x-- FTP
-            ftpClient.enterLocalPassiveMode();
+            if (isLocalPassiveMode.equals("yes") == true) {
+                ftpClient.enterLocalPassiveMode();
+            }
 
             // check FTP reply code
             if (!FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {
@@ -125,22 +143,17 @@ public class Crawler
 
             // get data from FTP and save to local
             getData(ftpClient, ftpCurrentDirectory, fileWriter, localPath);
-        } 
-        catch (Exception e) {
-            e.printStackTrace();
-        } 
-        finally {
+        } catch (SocketTimeoutException e) {
+            System.out.println("Abort: timeout exceeded in " + timeout + "(ms), try to set another value in config.xml file.");
+        } catch (Exception e) {
+            throw e;
+        } finally {
             // release resource
-            try {
-                if (ftpClient.isConnected()) {
-                    ftpClient.logout();
-                    ftpClient.disconnect();
-                }
-                fileWriter.close();
-            } 
-            catch (Exception e) {
-                e.printStackTrace();
+            if (ftpClient.isConnected()) {
+                ftpClient.logout();
+                ftpClient.disconnect();
             }
+            fileWriter.close();
         }
     }
 
@@ -165,58 +178,51 @@ public class Crawler
      */
     private void getData(FTPClient ftpClient, String ftpCurrentDirectory, FileWriter fileWriter, String localPath) throws Exception
     {
-        try {
-            // get FTP files in current directory
-            FTPFile[] ftpFiles = ftpClient.listFiles();
+        // get FTP files in current directory
+        FTPFile[] ftpFiles = ftpClient.listFiles();
 
-            // print message
-            System.out.print("Current Directory: " + ftpClient.printWorkingDirectory());
-            System.out.println(" (" + ftpFiles.length + " files)");
+        // print message
+        System.out.print("Current Directory: " + ftpClient.printWorkingDirectory());
+        System.out.println(" (" + ftpFiles.length + " files)");
 
-            // for each file type
-            for (int i = 0; i < ftpFiles.length; i++) {
-                // directory
-                if (ftpFiles[i].isDirectory()) {
-                    // create local directory
-                    createLocalDirectory(localPath + File.separator + ftpFiles[i].getName());
+        // for each file type
+        for (int i = 0; i < ftpFiles.length; i++) {
+            if (ftpFiles[i].isDirectory()) {    // directory
+                // create local directory
+                createLocalDirectory(localPath + File.separator + ftpFiles[i].getName());
 
-                    // before recursive call
-                    String tmpLocalPath = localPath;
-                    String tmpFTPCurrentDirectory = ftpCurrentDirectory;
-                    localPath += File.separator + ftpFiles[i].getName();
-                    ftpCurrentDirectory += File.separator + ftpFiles[i].getName();
-                    if (ftpClient.changeWorkingDirectory(ftpCurrentDirectory) == false) {
-                        System.out.println("Warning: cannot change to " + ftpCurrentDirectory + ".");
-                    }
-
-                    // recursive call
-                    getData(ftpClient, ftpCurrentDirectory, fileWriter, localPath);
-
-                    // after recursive call
-                    localPath = tmpLocalPath;
-                    ftpCurrentDirectory = tmpFTPCurrentDirectory;
-                    if (ftpClient.changeWorkingDirectory(ftpCurrentDirectory) == false) {
-                        System.out.println("Warning: cannot change to " + ftpCurrentDirectory + ".");
-                    }
-                // regular file
-                } else {
-                    // print message
-                    System.out.println(ftpFiles[i].getName());
-
-                    // save file to local
-                    File file = new File(localPath + File.separator + ftpFiles[i].getName());
-                    FileOutputStream fileOutputStream = new FileOutputStream(file); 
-                    ftpClient.retrieveFile(ftpFiles[i].getName(), fileOutputStream);
-                    fileOutputStream.close();
-
-                    // log file timestamp formating
-                    String timestamp = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL).format(new Date());
-                    fileWriter.write("[CWB FTP] [" + ftpClient.printWorkingDirectory() + "] [" + ftpFiles[i].getName() + "] [" + timestamp + "]" + "\n");
+                // before recursive call
+                String tmpLocalPath = localPath;
+                String tmpFTPCurrentDirectory = ftpCurrentDirectory;
+                localPath += File.separator + ftpFiles[i].getName();
+                ftpCurrentDirectory += File.separator + ftpFiles[i].getName();
+                if (ftpClient.changeWorkingDirectory(ftpCurrentDirectory) == false) {
+                    System.out.println("Warning: cannot change to " + ftpCurrentDirectory + ".");
                 }
+
+                // recursive call
+                getData(ftpClient, ftpCurrentDirectory, fileWriter, localPath);
+
+                // after recursive call
+                localPath = tmpLocalPath;
+                ftpCurrentDirectory = tmpFTPCurrentDirectory;
+                if (ftpClient.changeWorkingDirectory(ftpCurrentDirectory) == false) {
+                    System.out.println("Warning: cannot change to " + ftpCurrentDirectory + ".");
+                }
+            } else {    // regular file
+                // print message
+                System.out.println(ftpFiles[i].getName());
+
+                // save file to local
+                File file = new File(localPath + File.separator + ftpFiles[i].getName());
+                FileOutputStream fileOutputStream = new FileOutputStream(file); 
+                ftpClient.retrieveFile(ftpFiles[i].getName(), fileOutputStream);
+                fileOutputStream.close();
+
+                // log file timestamp formating
+                String timestamp = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL).format(new Date());
+                fileWriter.write("[CWB FTP] [" + ftpClient.printWorkingDirectory() + "] [" + ftpFiles[i].getName() + "] [" + timestamp + "]" + "\n");
             }
-        }
-        catch (Exception e) {
-            throw new Exception();
         }
     }
 
@@ -233,15 +239,10 @@ public class Crawler
      */
     private void createLocalDirectory(String path) throws Exception
     {
-        try {
-            if (new File(path).mkdir() == false) {
-                ;
-                //// no message is ok (update data)
-                //System.out.println("Warning: directory already exists.");
-            }
-        }
-        catch (Exception e) {
-            throw new Exception();
+        if (new File(path).mkdir() == false) {
+            ;
+            //// no message is ok (update data)
+            //System.out.println("Warning: directory already exists.");
         }
     }
 }

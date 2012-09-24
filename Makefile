@@ -3,8 +3,11 @@ all:
 	javac -Djava.ext.dirs=./lib/ -d ./output/classes/ *.java
 
 clean:
-	rm -rfd ./output/classes/ ./output/ftp-data/
+	rm -rfd ./output/classes/ ./output/ftp-data/ ./output/rdf/
 
 run:
 	java -Djava.ext.dirs=./lib/ -classpath ./output/classes/ openisdm.Main
 	#java -Djava.ext.dirs=./lib/ -classpath ./output/classes/ openisdm.Crawler
+
+rdf:
+	java -Djava.ext.dirs=./lib/ -classpath ./output/classes/ openisdm.FileTraversal

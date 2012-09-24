@@ -19,9 +19,7 @@
 package openisdm;
 
 import java.io.*;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathFactory;
-import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.*;
 import org.xml.sax.InputSource;
 
 /*
@@ -48,8 +46,17 @@ public class ParseXML
             String password = getNodeValue("config.xml", "/config/cwb-ftp/password");
             System.out.println("password = " + "\"" + password + "\"");
 
-            String localPath = getNodeValue("config.xml", "/config/cwb-ftp/save-to-local");
-            System.out.println("save-to-local = " + "\"" + localPath + "\"");
+            String timeout = getNodeValue("config.xml", "/config/cwb-ftp/timeout");
+            System.out.println("timeout = " + "\"" + timeout + "\"");
+
+            String logFile = getNodeValue("config.xml", "/config/cwb-ftp/logFile");
+            System.out.println("logFile = " + "\"" + logFile + "\"");
+
+            String localPath = getNodeValue("config.xml", "/config/cwb-ftp/localPath");
+            System.out.println("localPath = " + "\"" + localPath + "\"");
+
+            String isLocalPassiveMode = getNodeValue("config.xml", "/config/cwb-ftp/isLocalPassiveMode");
+            System.out.println("isLocalPassiveMode = " + "\"" + isLocalPassiveMode + "\"");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,8 +76,8 @@ public class ParseXML
     {
         XPath xpath = XPathFactory.newInstance().newXPath();
         InputSource inputSource = new InputSource(fileName);
-        String value = xpath.evaluate(nodeName, inputSource);
+        String result = xpath.evaluate(nodeName, inputSource);
 
-        return value;
+        return result;
     }
 }

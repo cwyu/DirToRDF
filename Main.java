@@ -35,18 +35,16 @@ public class Main
     public static void main(String [] args)
     {
         try {
-//            String serverIP = "ftpsv.cwb.gov.tw";
-//            String localPath = "./output/ftp-data/";
-
             // read config.xml
             String remoteIP = ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/host");
-            String localPath = ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/save-to-local");
+            String localPath = ParseXML.getNodeValue("config.xml", "/config/cwb-ftp/localPath");
+            String rootPath = ParseXML.getNodeValue("config.xml", "/config/generate-rdf/rootPath");
 
             // get CWB data and save to local
             new Crawler().getFTP(remoteIP, localPath);
 
             // generate RDF
-            new FileTraversal();
+            new GenerateRDF().new FromFileHierarchy(rootPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
