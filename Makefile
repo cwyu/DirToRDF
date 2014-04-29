@@ -7,7 +7,6 @@ clean:
 
 run:
 	java -Djava.ext.dirs=./lib/ -classpath ./output/classes/ openisdm.Main
-	#java -Djava.ext.dirs=./lib/ -classpath ./output/classes/ openisdm.Crawler
 
 rdf:
 	java -Djava.ext.dirs=./lib/ -classpath ./output/classes/ openisdm.FileTraversal
