@@ -5,7 +5,7 @@
  * 
  * Version information
  *
- *   Beta v0.2
+ *   v0.2
  *
  * Date
  *
