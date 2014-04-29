@@ -5,11 +5,11 @@
  * 
  * Version information
  *
- *   Beta v0.1
+ *   Beta v0.2
  *
  * Date
  *
- *   2012-08-15 Old Yu
+ *   2012-08-15 Cheng-Wei Yu (Old Yu)
  * 
  * Copyright notice
  *
@@ -26,8 +26,8 @@ package openisdm;
 
 import java.io.*;
 import java.net.*;
-import java.util.Date;
 import java.text.DateFormat;
+import java.util.Date;
 import org.apache.commons.net.ftp.*;
 
 /*

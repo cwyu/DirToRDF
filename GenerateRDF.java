@@ -1,15 +1,3 @@
-// http://jena.apache.org/tutorials/rdf_api.html
-// http://jena.apache.org/documentation/javadoc/jena/com/hp/hpl/jena/vocabulary/package-tree.html
-// http://jena.apache.org/documentation/javadoc/jena/com/hp/hpl/jena/vocabulary/DC.html
-// http://jena.apache.org/documentation/javadoc/jena/com/hp/hpl/jena/rdf/model/Resource.html
-// http://jena.sourceforge.net/IO/iohowto.html
-//
-// RDF2Go
-// http://semanticweb.org/wiki/RDF2Go
-//
-// Java XML parser comparison
-// http://blog.xuite.net/javax/programmer/22438335-%EF%BC%BBXML%EF%BC%BDJava%E4%B8%AD%E5%9B%9B%E7%A8%AE%E6%93%8D%E4%BD%9Cxml%E6%96%B9%E5%BC%8F%E7%9A%84%E6%AF%94%E8%BC%83
-
 /*
  * Classname
  *
@@ -17,11 +5,11 @@
  * 
  * Version information
  *
- *   Beta v0.1
+ *   Beta v0.2
  *
  * Date
  *
- *   2012-08-15 Old Yu
+ *   2012-08-15 Cheng-Wei Yu (Old Yu)
  * 
  * Copyright notice
  *
@@ -35,14 +23,6 @@
  */
 
 package openisdm;
-
-import java.io.*;
-//import java.util.Date;
-//import java.text.DateFormat;
-//import org.apache.commons.net.ftp.*;
-
-// The ARQ application API.
-import org.openjena.atlas.io.IndentedWriter;
 
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
@@ -59,6 +39,8 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.core.Var;
 import com.hp.hpl.jena.sparql.syntax.ElementGroup;
 import com.hp.hpl.jena.vocabulary.DC;
+import java.io.*;
+import org.openjena.atlas.io.IndentedWriter;
 
 /*
  * Description
@@ -192,53 +174,4 @@ public class GenerateRDF
             //System.out.println("Warning: directory already exists.");
         }
     }
-}    // end of class GenerateRDF
-
-/*    
-    public static Model createModel()
-    {
-        Model model = ModelFactory.createDefaultModel() ;
-        
-        Resource r1 = model.createResource("http://example.org/book#1") ;
-        Resource r2 = model.createResource("http://example.org/book#2") ;
-        Resource r3 = model.createResource("http://example.org/book#3") ;
-        
-        r1.addProperty(DC.title, "SPARQL - the book")
-          .addProperty(DC.description, "A book about SPARQL") ;
-        
-        r2.addProperty(DC.title, "Advanced techniques for SPARQL") ;
-
-        r3.addProperty(DC.title, "Jena - an RDF framework for Java")
-          .addProperty(DC.description, "A book about Jena") ;
-
-model.write(System.out, "RDF/XML-ABBREV");
-
-        return model ;
-    }
-*/
-
-
-//        File root = new File("/home/foobar/Personal/Examples");
-//
-//        try {
-//            String[] extensions = {"xml", "java", "dat"};
-//            boolean recursive = true;
-//
-//            //
-//            // Finds files within a root directory and optionally its
-//            // subdirectories which match an array of extensions. When the
-//            // extensions is null all files will be returned.
-//            //
-//            // This method will returns matched file as java.io.File
-//            //
-//            Collection files = FileUtils.listFiles(root, extensions, recursive);
-//
-//            for (Iterator iterator = files.iterator(); iterator.hasNext();) {
-//                File file = (File) iterator.next();
-//                System.out.println("File = " + file.getAbsolutePath());
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-
+}

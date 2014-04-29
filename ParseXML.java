@@ -5,11 +5,11 @@
  * 
  * Version information
  *
- *   Beta v0.1
+ *   Beta v0.2
  *
  * Date
  *
- *   2012-08-30 Old Yu
+ *   2012-08-15 Cheng-Wei Yu (Old Yu)
  * 
  * Copyright notice
  *
