@@ -4,11 +4,11 @@ Get CWB (Central Weather Bureau) data from FTP, and then convert directory struc
 # Language
 Java
 
-# Log file
-./output/log/ftp.log
-
 # Output path
 ./output/
+
+# Log file
+./output/log/ftp.log
 
 # Build command (in Linux)
 make
